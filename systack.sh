@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # environment
-. /etc/profile.d/netflix_environment.sh
+#. /etc/profile.d/netflix_environment.sh
 PATH=/bin:/usr/bin:$PATH
 TS=$(date +%Y-%m-%d_%T)
 HOSTNAME=$(uname -n)
 PMADIR=/usr/lib/jvm/perf-map-agent
-WEBDIR=/usr/share/pcp/jsdemos/systack
+WEBDIR=/usr/share/pcp/webapps/systack
 WDIR=/mnt/logs/pcp/generic/SYSTACK
 BDIR=/var/lib/pcp/pmdas/generic/BINFlameGraph
 SVG=$WEBDIR/systack.svg
@@ -47,7 +47,7 @@ done
 # generate flame graph and stash it away with the folded profile on s3
 timeout 20 perf script -i $PERF | $BDIR/stackcollapse-perf.pl | grep -v cpu_idle > $FOLDED
 $BDIR/flamegraph.pl --color=java --title="CPU Flame Graph (no idle): $HOSTNAME, $TS" < $FOLDED > $SVG
-s3cp $SVG $S3BUCKET/perf-cpu-stacks-$TS.svg &> /dev/null
-s3cp $FOLDED $S3BUCKET/perf-cpu-stacks-$TS.folded &> /dev/null
+#s3cp $SVG $S3BUCKET/perf-cpu-stacks-$TS.svg &> /dev/null
+#s3cp $FOLDED $S3BUCKET/perf-cpu-stacks-$TS.folded &> /dev/null
 
 # $PERF file left behind for debug or custom reports (will be overwritten next time)
