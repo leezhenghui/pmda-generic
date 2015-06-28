@@ -30,8 +30,7 @@ for pid in $(pgrep -x java); do
         mapfile=/tmp/perf-$pid.map
         if [ -e $PMADIR ]; then
                 cd $PMADIR
-                # XXX todo: set JAVA_HOME based on running pid
-                JAVA_HOME=/usr/lib/jvm/java-8-oracle
+                JAVA_HOME=/usr/lib/jvm/jdk1.8.0_45/
 		if [ -d $JAVA_HOME ]; then
 			# run as java user to avoid "well-known file is not secure" error
 			JAVA_USER=$(ps ho user -p $pid)
