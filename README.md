@@ -17,7 +17,9 @@ by this PMDA.
 Once the PMDA has been installed, the following command will list all
 the available metrics and their explanatory "help" text:
 
-	$ pminfo -fT generic
+```
+$ pminfo -fT generic
+```
 
 Dependencies
 ============
