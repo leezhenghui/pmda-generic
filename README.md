@@ -45,7 +45,8 @@ $ cd $PCP_PMDAS_DIR/generic
 ```
 $ ./Install
 ```
-    and choose both the "collector" and "monitor" installation
+
+ +  and choose both the "collector" and "monitor" installation
     configuration options -- everything else is automated.
 
 De-installation
