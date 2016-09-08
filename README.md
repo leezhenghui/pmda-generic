@@ -31,7 +31,9 @@ You **must** have these dependencies installed in order to successfully generate
 Installation
 ============
 
- +  # cd $PCP_PMDAS_DIR/generic
+```
+$ cd $PCP_PMDAS_DIR/generic
+```
 
  +  Check that there is no clash in the Performance Metrics Domain
     defined in ./domain.h and the other PMDAs currently in use (see
@@ -40,8 +42,9 @@ Installation
 
  +  Then simply use
 
-	# ./Install
-
+```
+$ ./Install
+```
     and choose both the "collector" and "monitor" installation
     configuration options -- everything else is automated.
 
@@ -50,8 +53,10 @@ De-installation
 
  +  Simply use
 
-  # cd $PCP_PMDAS_DIR/generic
-	# ./Remove
+```
+$ cd $PCP_PMDAS_DIR/generic
+$ ./Remove
+```
 
 Troubleshooting
 ===============
