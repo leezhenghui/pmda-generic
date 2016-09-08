@@ -1,22 +1,16 @@
 #!/bin/bash
+
 # environment
-. /etc/profile.d/netflix_environment.sh
 PATH=/bin:/usr/bin:$PATH
 HOSTNAME=$(uname -n)
-S3BUCKET="s3://nflx.cldperf.$NETFLIX_ENVIRONMENT/pcp/$EC2_INSTANCE_ID"
-EC2HOSTNAME=$EC2_PUBLIC_HOSTNAME
-
 TS=`date +%Y%m%d-%T`
-#DIR
 WEBDIR=/usr/share/pcp/jsdemos/jstack
 WDIR=/mnt/logs/pcp/generic/JSTACK
 BDIR=/var/lib/pcp/pmdas/generic/BINFlameGraph
 THDIR=/apps/tomcat/logs/cores
 #FILE
 THSVG=$WEBDIR/threadump-history.svg
-S3THSVG=threadump-history
 DEMOSVG=$WEBDIR/threadump-Demo.svg
-S3DEMOSVG=threadump-Demo
 #
 if [ ! -d "$WDIR" ];
 then
@@ -45,24 +39,21 @@ for i in `ps -e|grep java|awk '{print $1}'`
     j=$(( $j + 1 ))
    done
 j=0
-$BDIR/stackcollapse-jstack.pl < $WDIR/jstack.out.$i > $WDIR/jstack.out.$i-folded  
+$BDIR/stackcollapse-jstack.pl < $WDIR/jstack.out.$i > $WDIR/jstack.out.$i-folded
 $BDIR/flamegraph.pl < $WDIR/jstack.out.$i-folded > $WEBDIR/jstack-$i-PID.svg
 /bin/rm $WDIR/jstack.out.$i
 /bin/rm $WDIR/jstack.out.$i-folded
-/usr/bin/s3cp $WEBDIR/jstack-$i-PID.svg $S3BUCKET/jstack-$i-PID-$TS.svg &> /dev/null
 done
 
-if  ls $THDIR/threaddump*.txt &> /dev/null; then 
+if  ls $THDIR/threaddump*.txt &> /dev/null; then
 /bin/cat $THDIR/threaddump*.txt > $WDIR/all-threaddump.txt
-$BDIR/stackcollapse-jstack.pl < $WDIR/all-threaddump.txt >$WDIR/out.folded  
-$BDIR/flamegraph.pl < $WDIR/out.folded > $THSVG 
-/usr/bin/s3cp $THSVG $S3BUCKET/$S3THSVG-$TS.svg &> /dev/null
+$BDIR/stackcollapse-jstack.pl < $WDIR/all-threaddump.txt >$WDIR/out.folded
+$BDIR/flamegraph.pl < $WDIR/out.folded > $THSVG
 else
 # For Demo purpose only
 /bin/cat /var/lib/pcp/pmdas/generic/JSTACK/threaddump*.txt > $WDIR/all-threaddump.txt
-$BDIR/stackcollapse-jstack.pl < $WDIR/all-threaddump.txt >$WDIR/out.folded  
-$BDIR/flamegraph.pl < $WDIR/out.folded > $DEMOSVG 
-/usr/bin/s3cp $DEMOSVG $S3BUCKET/$S3DEMOSVG-$TS.svg &> /dev/null
+$BDIR/stackcollapse-jstack.pl < $WDIR/all-threaddump.txt >$WDIR/out.folded
+$BDIR/flamegraph.pl < $WDIR/out.folded > $DEMOSVG
 fi
 
 /bin/rm $WDIR/out.folded
@@ -91,7 +82,7 @@ function create_gnu_index ()
     #[[ $# != 3 ]] && echo "bad args. do: $FUNCNAME '/DOCUMENT_ROOT/' '/' 'gnu.askapache.com'" && exit 2
 
     # D is the doc_root containing the site
-    local L= D="/usr/share/pcp/jsdemos/jstack/" SUBDIR="jstack" DOMAIN="http://$EC2HOSTNAME:7402/" F=
+    local L= D="/usr/share/pcp/jsdemos/jstack/" SUBDIR="jstack" DOMAIN="http://$HOSTNAME/" F=
 
     # The index.html file to create
     F="${D}index.html"
@@ -155,4 +146,3 @@ create_gnu_index
 
 # takes about 1-5 seconds to complete
 exit
-

@@ -1,22 +1,12 @@
 Generic PMDA
 ============
 
-This PMDA is a sample that illustrates how a simple PMDA might be
-constructed using libpcp_pmda.
+This PMDA is a **temporary hack** to support CPU [Flame Graphs](http://www.brendangregg.com/FlameGraphs/cpuflamegraphs.html) and Disk Latency Heat Maps on [Vector](https://github.com/Netflix/vector). This solution is far from ideal and **will be deprecated** once the the widgets and PMDAs are ready. Two issues are being used to track the development of the new solution:
 
-Although the metrics supported as simple, the framework is quite
-general, and could be extended to implement a much more complex PMDA.
+* [github.com/Netflix/vector/issues/7](https://github.com/Netflix/vector/issues/7)
+* [github.com/Netflix/vector/issues/74](https://github.com/Netflix/vector/issues/74)
 
-Note:
-	This PMDA may be remade from source and hence requires IDO (or
-	more specifically a C compiler) to be installed.
-
-	Uses of make(1) may fail (without removing or clobbering files)
-	if the C compiler cannot be found.  This is most likely to
-	happen when running the PMDA ./Install script.
-
-	The only remedial action is to install the C compiler, or
-	hand-craft changes to the Makefile.
+**WARNING:** This PMDA was not *properly* tested. Use at your own risk.
 
 Metrics
 =======
@@ -28,6 +18,15 @@ Once the PMDA has been installed, the following command will list all
 the available metrics and their explanatory "help" text:
 
 	$ pminfo -fT generic
+
+Dependencies
+============
+
+You **must** have these dependencies installed in order to successfully generate the graphs.
+
+* **perf command** - On Debian/Ubuntu based distributions, this is part of the *linux-tools* package.
+* **perf-map-agent** - *Java-only* - If you would like to translate Java symbols, you will need perf-map-agent. Follow the instructions on [perf-map-agent](https://github.com/jrudolph/perf-map-agent) to install it.
+* **Patched JDK** - *Java-only* - Besides perf-map-agent, you will also need a patched JDK that includes *frame pointer register*. From Java 8 update 60 onwards, this is made available by the *-XX:+PreserveFramePointer* option.
 
 Installation
 ============
@@ -51,7 +50,7 @@ De-installation
 
  +  Simply use
 
-        # cd $PCP_PMDAS_DIR/generic
+  # cd $PCP_PMDAS_DIR/generic
 	# ./Remove
 
 Troubleshooting
