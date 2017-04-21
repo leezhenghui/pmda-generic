@@ -25,7 +25,7 @@ forced_restart=true
 pmdaSetup
 pmdaInstall
 
-PMWEBD_LOG_DIR=/mnt/logs/pcp/pmwebd
+PMWEBD_LOG_DIR=/var/log/pcp/pmwebd
 
 if [ ! -d "$PMWEBD_LOG_DIR" ]; then
 	mkdir $PMWEBD_LOG_DIR
