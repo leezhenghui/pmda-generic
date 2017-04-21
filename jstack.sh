@@ -4,8 +4,8 @@
 PATH=/bin:/usr/bin:$PATH
 HOSTNAME=$(uname -n)
 TS=`date +%Y%m%d-%T`
-WEBDIR=/usr/share/pcp/jsdemos/jstack
-WDIR=/mnt/logs/pcp/generic/JSTACK
+WEBDIR=/usr/share/pcp/webapps/jstack
+WDIR=/var/log/pcp/generic/JSTACK
 BDIR=/var/lib/pcp/pmdas/generic/BINFlameGraph
 THDIR=/apps/tomcat/logs/cores
 #FILE
